@@ -1,6 +1,13 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 
+import Sidebar from "@/components/Sidebar";
+import ToasterProvider from "@/providers/ToasterProvider";
+import UserProvider from "@/providers/UserProvider";
+import ModalProvider from "@/providers/ModalProvider";
+import SupabaseProvider from "@/providers/SupabaseProvider";
+import Player from "@/components/Player";
+
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -18,10 +25,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col items-center">
-          {children}
-        </main>
+      <body className="bg-black">
+        <ToasterProvider />
+        <SupabaseProvider>
+          <UserProvider>
+            <ModalProvider />
+            <Sidebar>{children}</Sidebar>
+            <Player />
+          </UserProvider>
+        </SupabaseProvider>
       </body>
     </html>
   );
