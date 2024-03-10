@@ -1,13 +1,13 @@
 "use client";
 
-// import useSound from "use-sound";
+import useSound from "use-sound";
 import { useEffect, useState } from "react";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 
 import { Song } from "@/types";
-// import usePlayer from "@/hooks/usePlayer";
+import usePlayer from "@/hooks/usePlayer";
 
 import LikeButton from "./LikeButton";
 import MediaItem from "./MediaItem";
@@ -18,70 +18,72 @@ interface PlayerContentProps {
   songUrl: string;
 }
 
-export default function PlayerContent() {
-  //   const player = usePlayer();
+const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
+  const player = usePlayer();
   const [volume, setVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
 
-  //   const onPlayNext = () => {
-  //     if (player.ids.length === 0) {
-  //       return;
-  //     }
+  console.log(song);
 
-  //     const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-  //     const nextSong = player.ids[currentIndex + 1];
+  const onPlayNext = () => {
+    if (player.ids.length === 0) {
+      return;
+    }
 
-  //     if (!nextSong) {
-  //       return player.setId(player.ids[0]);
-  //     }
+    const currentIndex = player.ids.findIndex((id) => id === player.activeId);
+    const nextSong = player.ids[currentIndex + 1];
 
-  //     player.setId(nextSong);
-  //   };
+    if (!nextSong) {
+      return player.setId(player.ids[0]);
+    }
 
-  //   const onPlayPrevious = () => {
-  //     if (player.ids.length === 0) {
-  //       return;
-  //     }
+    player.setId(nextSong);
+  };
 
-  //     const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-  //     const previousSong = player.ids[currentIndex - 1];
+  const onPlayPrevious = () => {
+    if (player.ids.length === 0) {
+      return;
+    }
 
-  //     if (!previousSong) {
-  //       return player.setId(player.ids[player.ids.length - 1]);
-  //     }
+    const currentIndex = player.ids.findIndex((id) => id === player.activeId);
+    const previousSong = player.ids[currentIndex - 1];
 
-  //     player.setId(previousSong);
-  //   };
+    if (!previousSong) {
+      return player.setId(player.ids[player.ids.length - 1]);
+    }
 
-  //   const [play, { pause, sound }] = useSound(songUrl, {
-  //     volume: volume,
-  //     onplay: () => setIsPlaying(true),
-  //     onend: () => {
-  //       setIsPlaying(false);
-  //       onPlayNext();
-  //     },
-  //     onpause: () => setIsPlaying(false),
-  //     format: ["mp3"],
-  //   });
+    player.setId(previousSong);
+  };
 
-  //   useEffect(() => {
-  //     sound?.play();
+  const [play, { pause, sound }] = useSound(songUrl, {
+    volume: volume,
+    onplay: () => setIsPlaying(true),
+    onend: () => {
+      setIsPlaying(false);
+      onPlayNext();
+    },
+    onpause: () => setIsPlaying(false),
+    format: ["mp3"],
+  });
 
-  //     return () => {
-  //       sound?.unload();
-  //     };
-  //   }, [sound]);
+  useEffect(() => {
+    sound?.play();
 
-  //   const handlePlay = () => {
-  //     if (!isPlaying) {
-  //       play();
-  //     } else {
-  //       pause();
-  //     }
-  //   };
+    return () => {
+      sound?.unload();
+    };
+  }, [sound]);
+
+  const handlePlay = () => {
+    if (!isPlaying) {
+      play();
+    } else {
+      pause();
+    }
+  };
 
   const toggleMute = () => {
     if (volume === 0) {
@@ -95,8 +97,8 @@ export default function PlayerContent() {
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div className="flex w-full justify-start">
         <div className="flex items-center gap-x-4">
-          <MediaItem />
-          <LikeButton />
+          <MediaItem data={song} />
+          <LikeButton songId={song.id} />
         </div>
       </div>
 
@@ -111,7 +113,7 @@ export default function PlayerContent() {
           "
       >
         <div
-          //   onClick={handlePlay}
+          onClick={handlePlay}
           className="
               h-10
               w-10
@@ -141,7 +143,7 @@ export default function PlayerContent() {
           "
       >
         <AiFillStepBackward
-          //   onClick={onPlayPrevious}
+          onClick={onPlayPrevious}
           size={30}
           className="
               text-neutral-400 
@@ -151,7 +153,7 @@ export default function PlayerContent() {
             "
         />
         <div
-          //   onClick={handlePlay}
+          onClick={handlePlay}
           className="
               flex 
               items-center 
@@ -167,7 +169,7 @@ export default function PlayerContent() {
           <Icon size={30} className="text-black" />
         </div>
         <AiFillStepForward
-          //   onClick={onPlayNext}
+          onClick={onPlayNext}
           size={30}
           className="
               text-neutral-400 
@@ -190,4 +192,6 @@ export default function PlayerContent() {
       </div>
     </div>
   );
-}
+};
+
+export default PlayerContent;

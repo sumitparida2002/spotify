@@ -1,41 +1,45 @@
-"use client";
+import Link from "next/link";
+import { IconType } from "react-icons";
+import { twMerge } from "tailwind-merge";
 
-import Image from "next/image";
-
-export default function SearchItem() {
-  return (
-    <div
-      className="
-        flex 
-        items-center 
-        gap-x-3 
-        cursor-pointer 
-        hover:bg-neutral-800/50 
-        w-full 
-        p-2 
-        rounded-md
-      "
-    >
-      <div
-        className="
-          relative 
-          rounded-md 
-          min-h-[48px] 
-          min-w-[48px] 
-          overflow-hidden
-        "
-      >
-        {/* <Image
-          fill
-          src={imageUrl || "/images/music-placeholder.png"}
-          alt="MediaItem"
-          className="object-cover"
-        /> */}
-      </div>
-      <div className="flex flex-col gap-y-1 overflow-hidden">
-        <p className="text-white truncate">To</p>
-        <p className="text-neutral-400 text-sm truncate">By Me</p>
-      </div>
-    </div>
-  );
+interface SidebarItemProps {
+  icon: IconType;
+  label: string;
+  active?: boolean;
+  href: string;
 }
+
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  icon: Icon,
+  label,
+  active,
+  href,
+}) => {
+  return (
+    <Link
+      href={href}
+      className={twMerge(
+        `
+        flex 
+        flex-row 
+        h-auto 
+        items-center 
+        w-full 
+        gap-x-4 
+        text-md 
+        font-medium
+        cursor-pointer
+        hover:text-white
+        transition
+        text-neutral-400
+        py-1`,
+        active && "text-white"
+      )}
+    >
+      <Icon size={26} />
+      <p className="truncate w-100">{label}</p>
+    </Link>
+  );
+};
+
+export default SidebarItem;

@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect } from "react";
 import "./styles.css";
 import SignInForm from "./components/SignIn";
 import SignUpForm from "./components/SignUp";
@@ -18,7 +19,8 @@ export default function App() {
 
   useEffect(() => {
     if (session) {
-      router.refresh();
+      console.log("hi");
+      console.log(session);
       router.push("/");
     }
   }, [session, router]);
@@ -26,8 +28,8 @@ export default function App() {
   const supabaseClient = useSupabaseClient();
 
   return (
-    <div className="App">
-      <Box>
+    <div className="flex justify-center mt-[7%]  h-[100vh]">
+      <Box className="w-[30%] align-middle py-2 pt-6 px-4">
         <Auth
           supabaseClient={supabaseClient}
           providers={["github"]}

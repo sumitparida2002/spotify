@@ -20,7 +20,8 @@ const UploadModal = () => {
   const uploadModal = useUploadModal();
   const supabaseClient = useSupabaseClient();
   //   fix hook
-  //   const { user } = useUser();
+  const { user } = useUser();
+  console.log(user);
   const router = useRouter();
 
   const { register, handleSubmit, reset } = useForm<FieldValues>({
@@ -39,7 +40,7 @@ const UploadModal = () => {
     }
   };
 
-  const user = { id: "2bb2d613-fd40-41ce-8595-ae3353929b2d" };
+  //   const user = { id: "2bb2d613-fd40-41ce-8595-ae3353929b2d" };
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     try {

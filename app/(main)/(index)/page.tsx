@@ -2,10 +2,14 @@ import Navbar from "@/components/Navbar";
 import Card from "@/components/Card";
 import ListItem from "@/components/ListItem";
 import PageContent from "@/components/PageContents";
-import getSongs from "@/components/actions/getSongs";
+import getSongs from "@/actions/getSongs";
+import { useUser } from "@/hooks/useUser";
 
 export default async function Index() {
   const songs = await getSongs();
+
+  // const { user } = useUser();
+  // console.log(user);
 
   return (
     <div
