@@ -1,12 +1,28 @@
-import AccountForm from "./account-form";
-import { createClient } from "@/utils/supabase/server";
+import AccountContent from "./components/AccountContent";
+import Navbar from "@/components/Navbar";
 
-export default async function Account() {
-  const supabase = createClient();
+const Account = () => {
+  return (
+    <div
+      className="
+        bg-neutral-900 
+        rounded-lg 
+        h-full 
+        w-full 
+        overflow-hidden 
+        overflow-y-auto
+      "
+    >
+      <Navbar className="from-bg-neutral-900">
+        <div className="mb-2 flex flex-col gap-y-6">
+          <h1 className="text-white text-3xl font-semibold">
+            Account Settings
+          </h1>
+        </div>
+      </Navbar>
+      <AccountContent />
+    </div>
+  );
+};
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return <AccountForm user={user} />;
-}
+export default Account;

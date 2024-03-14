@@ -8,6 +8,7 @@ import ModalProvider from "@/providers/ModalProvider";
 import SupabaseProvider from "@/providers/SupabaseProvider";
 import Player from "@/components/Player";
 import getSongsByUserId from "@/actions/getSongByUserId";
+import getActiveProductsWithPrices from "@/actions/getActiveProductsWithPrices";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -24,13 +25,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const products = await getActiveProductsWithPrices();
+
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="bg-black">
         <ToasterProvider />
         <SupabaseProvider>
           <UserProvider>
-            <ModalProvider />
+            <ModalProvider products={products} />
             {children}
             <Player />
           </UserProvider>
